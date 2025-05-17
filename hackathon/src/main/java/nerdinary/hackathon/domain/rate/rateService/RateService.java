@@ -32,7 +32,7 @@ public class RateService {
 	public void init() {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			File file = new File("./rate-data.json");  // 파일 경로 맞게 조정 필요
+			File file = new File("./rateJson/rate-data.json");  // 파일 경로 맞게 조정 필요
 			rateDataList = mapper.readValue(file, new TypeReference<List<Map<String, Object>>>() {});
 		} catch (Exception e) {
 			throw new RuntimeException("rate-data.json 파일 로드 실패", e);
