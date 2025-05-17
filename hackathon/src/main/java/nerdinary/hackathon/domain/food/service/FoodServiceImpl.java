@@ -110,32 +110,6 @@ public class FoodServiceImpl implements FoodService {
         user.plusUsedCount();
     }
 
-
-    @Transactional
-    public List<AllFoodListResponse> getAllFoodsWithDday(Long userId) {
-        // User 객체 조회
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        // 사용자 기반 음식 등록 정보 조회
-        List<FoodRegister> foodList = foodRegisterRepository.findByUser(user);
-
-        // 응답 DTO 변환
-        return foodList.stream()
-                .map(foodRegister -> {
-                    long id = foodRegister.getFoodRegisterId();
-                    String name = foodRegister.getFood().getFoodName();
-                    String category = foodRegister.getFood().getFoodCategory();
-                    LocalDate expiration = foodRegister.getExpirationDate();
-                    long daysLeft = expiration != null
-                            ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
-                            : -1;
-                    String storageMethod = foodRegister.getStorageMethod();
-                    return new AllFoodListResponse(id, name, category, expiration, daysLeft, storageMethod);
-                })
-                .toList();
-    }
-
     @Override
     @Transactional
     public List<AllFoodListResponse> getFilteredFoods(Long userId, String storageMethod, boolean isExpiringSoon) {
@@ -166,7 +140,9 @@ public class FoodServiceImpl implements FoodService {
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
                     String method = fr.getStorageMethod();
-                    return new AllFoodListResponse(id, name, category, expiration, daysLeft,method);
+
+                    String isCompleted = fr.getFoodStatus();
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft,method,isCompleted);
                 })
                 .toList();
     }
