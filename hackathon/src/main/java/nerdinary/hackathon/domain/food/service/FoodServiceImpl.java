@@ -130,7 +130,8 @@ public class FoodServiceImpl implements FoodService {
                     long daysLeft = expiration != null
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
-                    return new AllFoodListResponse(id, name, category, expiration, daysLeft);
+                    String storageMethod = foodRegister.getStorageMethod();
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft, storageMethod);
                 })
                 .toList();
     }
@@ -164,7 +165,8 @@ public class FoodServiceImpl implements FoodService {
                     long daysLeft = expiration != null
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
-                    return new AllFoodListResponse(id, name, category, expiration, daysLeft);
+                    String method = fr.getStorageMethod();
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft,method);
                 })
                 .toList();
     }
