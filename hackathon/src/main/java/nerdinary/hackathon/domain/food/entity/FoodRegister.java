@@ -20,8 +20,6 @@ public class FoodRegister {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long foodRegisterId;
 
-    private Integer quantity;
-
     private LocalDate purchaseDate;
 
     private LocalDate expirationDate;
