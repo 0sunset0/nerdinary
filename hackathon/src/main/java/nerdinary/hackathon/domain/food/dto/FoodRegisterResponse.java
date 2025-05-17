@@ -2,6 +2,9 @@ package nerdinary.hackathon.domain.food.dto;
 
 import java.time.LocalDate;
 
+import lombok.Getter;
+
+@Getter
 public class FoodRegisterResponse {
     private Long foodRegisterId;
     private String foodName;
