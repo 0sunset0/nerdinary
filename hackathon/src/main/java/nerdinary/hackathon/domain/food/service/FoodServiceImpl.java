@@ -54,7 +54,7 @@ public class FoodServiceImpl implements FoodService {
                 .purchaseDate(purchaseDate)
                 .expirationDate(expirationDate)
                 .storageMethod(request.getStorageMethod())
-                .foodStatus(true)
+                .foodStatus("보관")
                 .user(user)
                 .food(food)
                 .build();
