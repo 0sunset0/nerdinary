@@ -54,18 +54,30 @@ public class FoodController {
 
     @Operation(
             summary = "전체 음식 목록 조회",
-            description = "모든 등록 음식의 이름, 소비기한, D-day를 조회합니다.",
+            description = "모든 등록 음식의 이름, 소비기한, D-day를 조회합니다. 보관 방식 및 D-7 임박 여부로 필터링 가능",
             parameters = {
-                    @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true)
+                    @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true,
+                            description = "JWT 액세스 토큰"),
+                    @Parameter(name = "storage", in = ParameterIn.QUERY, required = false,
+                            description = "보관 방식 (예: 냉장, 냉동, 실온)"),
+                    @Parameter(name = "isExpiringSoon", in = ParameterIn.QUERY, required = false,
+                            description = "true이면 소비기한 7일 이하만 필터링")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "조회 성공",
+                            content = @Content(schema = @Schema(implementation = AllFoodListResponse.class)))
             }
     )
     @GetMapping
     public ResponseEntity<List<AllFoodListResponse>> getAllFoods(
-            @Parameter(hidden = true) @JwtValidation Long userId
+            @Parameter(hidden = true) @JwtValidation Long userId,
+            @RequestParam(required = false) String storage,
+            @RequestParam(required = false, defaultValue = "false") boolean isExpiringSoon
     ) {
-        List<AllFoodListResponse> foods = foodService.getAllFoodsWithDday(userId);
+        List<AllFoodListResponse> foods = foodService.getFilteredFoods(userId, storage, isExpiringSoon);
         return ResponseEntity.ok(foods);
     }
+
 
 
     @Operation(
