@@ -9,19 +9,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import nerdinary.hackathon.domain.food.dto.AllFoodListResponse;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterRequest;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterResponse;
 import nerdinary.hackathon.domain.food.service.FoodService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/foods")
-@Tag(name = "Food", description = "음식 등록 API")
+@Tag(name = "Food", description = "음식 API")
 public class FoodController {
 
     private final FoodService foodService;
@@ -45,4 +45,13 @@ public class FoodController {
         FoodRegisterResponse response = foodService.registerFood(dto, userId);
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "전체 음식 목록 조회", description = "모든 등록 음식의 이름, 소비기한, D-day를 조회합니다.")
+    @GetMapping
+    public ResponseEntity<List<AllFoodListResponse>> getAllFoods(HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
+        List<AllFoodListResponse> foods = foodService.getAllFoodsWithDday(userId);
+        return ResponseEntity.ok(foods);
+    }
+
 }
