@@ -72,8 +72,7 @@ public class FoodController {
             summary = "음식 검색",
             description = "음식이름을 검색하면 자신이 등록한 음식들을 반환합니다.",
             parameters = {
-                    @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true),
-                    @Parameter(name = "name", description = "검색어", required = true)
+                    @Parameter(name = "query", description = "검색어", required = true, in = ParameterIn.QUERY)
             },
             responses = {
                     @ApiResponse(responseCode = "200", description = "검색 성공",
@@ -89,4 +88,5 @@ public class FoodController {
         FoodSearchResponse response = foodService.searchFood(userId, query);
         return ResponseEntity.ok(response);
     }
+
 }
