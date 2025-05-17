@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nerdinary.hackathon.domain.login.dto.reponse.LoginResponse;
@@ -18,7 +19,7 @@ import nerdinary.hackathon.domain.login.dto.request.LoginRequest;
 import nerdinary.hackathon.domain.login.dto.request.ReissueRequest;
 import nerdinary.hackathon.domain.login.dto.reponse.JoinResponse;
 import nerdinary.hackathon.domain.login.service.LoginService;
-
+@Tag(name = "로그인 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")

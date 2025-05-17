@@ -1,26 +1,36 @@
 package nerdinary.hackathon.global.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.RequiredArgsConstructor;
 import nerdinary.hackathon.domain.login.service.AuthInterceptor;
+import nerdinary.hackathon.domain.login.jwt.JwtArgumentResolver;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
 	private final AuthInterceptor authInterceptor;
+	private final JwtArgumentResolver jwtArgumentResolver;
+
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins("*") // 모든 출처 허용
+			.allowedOrigins(
+				"https://frontend-two-pi-48.vercel.app",
+				"http://localhost:5173",
+				"http://localhost:8081"
+			)
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.allowedHeaders("*")
-			.allowCredentials(false)
+			.allowCredentials(true)
 			.maxAge(1800);
 	}
 
@@ -29,5 +39,11 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(authInterceptor)
 			.addPathPatterns("/api/**")
 			.excludePathPatterns("/api/auth/login", "/api/auth/join", "/api/auth/reissue");
+	}
+
+
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(jwtArgumentResolver);
 	}
 }

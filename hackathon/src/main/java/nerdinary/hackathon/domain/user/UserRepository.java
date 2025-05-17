@@ -1,10 +1,9 @@
-package nerdinary.hackathon.domain.login.repository;
+package nerdinary.hackathon.domain.user;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import nerdinary.hackathon.domain.login.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	boolean existsByEmail(String email);      // 이메일 중복 체크

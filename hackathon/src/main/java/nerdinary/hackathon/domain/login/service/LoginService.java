@@ -12,9 +12,9 @@ import nerdinary.hackathon.domain.login.dto.reponse.LoginResponse;
 import nerdinary.hackathon.domain.login.dto.reponse.ReissueResponse;
 import nerdinary.hackathon.domain.login.dto.request.JoinRequest;
 import nerdinary.hackathon.domain.login.dto.request.LoginRequest;
-import nerdinary.hackathon.domain.login.entity.User;
+import nerdinary.hackathon.domain.user.User;
 import nerdinary.hackathon.domain.login.jwt.JwtUtil;
-import nerdinary.hackathon.domain.login.repository.UserRepository;
+import nerdinary.hackathon.domain.user.UserRepository;
 
 @Service
 @Transactional
@@ -37,8 +37,8 @@ public class LoginService {
 		}
 
 		//토큰 발급
-		String accessToken = jwtUtil.createAccessToken(password);
-		String refreshToken = jwtUtil.createRefreshToken(password);
+		String accessToken = jwtUtil.createAccessToken(user.getId());
+		String refreshToken = jwtUtil.createRefreshToken(user.getId());
 		//리프레쉬 토큰 저장
 		user.updateRefreshToken(refreshToken);
 		//로그인 성공
@@ -55,9 +55,8 @@ public class LoginService {
 		userRepository.save(user);
 
 		//토큰 발급
-		String password = joinRequest.getPassword();
-		String accessToken = jwtUtil.createAccessToken(password);
-		String refreshToken = jwtUtil.createRefreshToken(password);
+		String accessToken = jwtUtil.createAccessToken(user.getId());
+		String refreshToken = jwtUtil.createRefreshToken(user.getId());
 
 		//리프레쉬 토큰 저장
 		user.updateRefreshToken(refreshToken);
@@ -71,8 +70,8 @@ public class LoginService {
 		}
 
 		//리프레쉬 토큰으로 유저 찾기
-		String password = jwtUtil.getPasswordFromToken(refreshToken);
-		User user = userRepository.findByPassword(password)
+		Long userIdFromToken = jwtUtil.getUserIdFromToken(refreshToken);
+		User user = userRepository.findById(userIdFromToken)
 			.orElseThrow(() -> new UserException(USER_NOT_FOUND));
 
 		//리프레쉬 토큰 일치 여부 확인
@@ -81,7 +80,7 @@ public class LoginService {
 		}
 
 		//토큰 재발급
-		String accessToken = jwtUtil.createAccessToken(password);
+		String accessToken = jwtUtil.createAccessToken(user.getId());
 		return new ReissueResponse(accessToken, refreshToken);
 	}
 
