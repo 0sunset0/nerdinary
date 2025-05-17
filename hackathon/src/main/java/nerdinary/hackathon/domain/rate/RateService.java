@@ -22,13 +22,6 @@ public class RateService {
 		return calculateRate(usedCount, totalCount);
 	}
 
-	public double getDiscardedRate(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
-		int usedCount = user.getDiscardedFoodCount();
-		int totalCount = user.getTotalFoodCount();
-		return calculateRate(usedCount, totalCount);
-	}
-
 	public static double calculateRate(int count, int totalCount) {
 		if (totalCount == 0) {
 			return 0.0;

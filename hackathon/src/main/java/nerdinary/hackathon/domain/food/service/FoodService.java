@@ -13,4 +13,6 @@ public interface FoodService {
     List<AllFoodListResponse> getAllFoodsWithDday(Long userId);
 
     FoodSearchResponse searchFood(Long userId, String query);
+
+    void consumeFood(Long foodRegisterId);
 }
