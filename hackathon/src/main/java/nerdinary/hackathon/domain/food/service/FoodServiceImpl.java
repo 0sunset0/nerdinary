@@ -123,13 +123,14 @@ public class FoodServiceImpl implements FoodService {
         // 응답 DTO 변환
         return foodList.stream()
                 .map(foodRegister -> {
+                    long id = foodRegister.getFoodRegisterId();
                     String name = foodRegister.getFood().getFoodName();
                     String category = foodRegister.getFood().getFoodCategory();
                     LocalDate expiration = foodRegister.getExpirationDate();
                     long daysLeft = expiration != null
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
-                    return new AllFoodListResponse(name, category, expiration, daysLeft);
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft);
                 })
                 .toList();
     }
@@ -156,13 +157,14 @@ public class FoodServiceImpl implements FoodService {
 
                 // 응답 변환
                 .map(fr -> {
+                    long id = fr.getFoodRegisterId();
                     String name = fr.getFood().getFoodName();
                     String category = fr.getFood().getFoodCategory();
                     LocalDate expiration = fr.getExpirationDate();
                     long daysLeft = expiration != null
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
-                    return new AllFoodListResponse(name, category, expiration, daysLeft);
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft);
                 })
                 .toList();
     }
