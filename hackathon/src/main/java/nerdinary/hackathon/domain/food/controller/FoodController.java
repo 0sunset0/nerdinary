@@ -1,5 +1,6 @@
 package nerdinary.hackathon.domain.food.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterRequest;
@@ -20,11 +21,11 @@ public class FoodController {
 
     @PostMapping("/register")
     public ResponseEntity<FoodRegisterResponse> registerFood(
-            @RequestBody @Valid FoodRegisterRequest request,
-            @AuthenticationPrincipal CustomUserDetails userDetails
+            HttpServletRequest request,
+            @RequestBody @Valid FoodRegisterRequest dto
     ) {
-        Long userId = userDetails.getUser().getUserId(); // 인증된 사용자 ID
-        FoodRegisterResponse response = foodService.registerFood(request, userId);
+        Long userId = (Long) request.getAttribute("userId");
+        FoodRegisterResponse response = foodService.registerFood(dto, userId);
         return ResponseEntity.ok(response);
     }
 }
