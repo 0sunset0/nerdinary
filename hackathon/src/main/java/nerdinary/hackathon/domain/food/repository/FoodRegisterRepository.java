@@ -17,4 +17,7 @@ public interface FoodRegisterRepository extends JpaRepository<FoodRegister, Long
 
     // 유통기한이 지난 음식 조회
     List<FoodRegister> findByUserAndExpirationDateBeforeAndFoodStatusIsTrue(User user, java.time.LocalDate now);
+
+    // 특정사용자가 음식이름 조회
+    List<FoodRegister> findByUserAndFood_FoodNameContainingIgnoreCase(User user, String foodName);
 }

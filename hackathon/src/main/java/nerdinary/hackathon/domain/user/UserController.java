@@ -20,7 +20,7 @@ public class UserController {
 	private final UserService userService;
 
 	@Operation(summary = "내 정보 조회 (사용 수, 폐기 수, 탄소 MBTI 결과)")
-	@Parameter(name = "AccessToken: Bearer ", in = ParameterIn.HEADER, required = true)
+	@Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true)
 	@GetMapping("/me")
 	public ResponseEntity<UserInfoResponse> getUserInfo(
 		@Parameter(hidden = true) @JwtValidation Long userId

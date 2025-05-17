@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import nerdinary.hackathon.domain.food.dto.AllFoodListResponse;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterRequest;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterResponse;
+import nerdinary.hackathon.domain.food.dto.FoodSearchResponse;
+import nerdinary.hackathon.domain.food.dto.FoodSearchResultDto;
 import nerdinary.hackathon.domain.food.entity.Food;
 import nerdinary.hackathon.domain.food.entity.FoodRegister;
 import nerdinary.hackathon.domain.food.repository.FoodRegisterRepository;
@@ -66,6 +68,29 @@ public class FoodServiceImpl implements FoodService {
         foodRegisterRepository.save(register);
 
         return new FoodRegisterResponse(register.getFoodRegisterId(), food.getFoodName(), expirationDate);
+    }
+
+    @Override
+    @Transactional
+    public FoodSearchResponse searchFood(Long userId, String query){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+
+        List<FoodRegister> foodRegisters = foodRegisterRepository
+                .findByUserAndFood_FoodNameContainingIgnoreCase(user, query);
+
+        List<FoodSearchResultDto> results = foodRegisters.stream()
+                .map(fr -> new FoodSearchResultDto(
+                        fr.getFoodRegisterId(),
+                        fr.getFood().getFoodName(),
+                        fr.getExpirationDate(),
+                        fr.getExpirationDate() != null && fr.getPurchaseDate() != null
+                                ? (long) fr.getExpirationDate().toEpochDay() - fr.getPurchaseDate().toEpochDay()
+                                : null
+                ))
+                .toList();
+
+        return new FoodSearchResponse(results);
     }
 
     @Override
