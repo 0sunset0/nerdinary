@@ -27,7 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
 				"https://frontend-two-pi-48.vercel.app",
 				"http://localhost:5173",
 				"http://localhost:8081",
-				"http://localhost:8080"
+				"http://localhost:8080",
+				"https://goodluckynews.store"
 			)
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.allowedHeaders("*")
