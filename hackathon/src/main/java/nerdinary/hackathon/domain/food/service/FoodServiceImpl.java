@@ -106,7 +106,6 @@ public class FoodServiceImpl implements FoodService {
         user.plusUsedCount();
     }
 
-    @Override
     @Transactional
     public List<AllFoodListResponse> getAllFoodsWithDday(Long userId) {
         // User 객체 조회
