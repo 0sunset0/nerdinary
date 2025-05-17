@@ -29,7 +29,6 @@ public class User {
 	private String password;
 	private Integer totalFoodCount;
 	private Integer usedFoodCount;
-	private Integer discardedFoodCount;
 
 	@Column(length = 255)
 	private String mbti;
@@ -44,6 +43,8 @@ public class User {
 	public User(String email, String password) {
 		this.email = email;
 		this.password = password;
+		this.totalFoodCount = 0;
+		this.usedFoodCount = 0;
 	}
 
 	public static User createUser(String email, String password) {
@@ -63,5 +64,14 @@ public class User {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updateAt = LocalDateTime.now();
+	}
+
+	public void plusUsedCount() {
+		this.usedFoodCount += 1;
+	}
+
+
+	public void plusTotalFoodCount() {
+		this.totalFoodCount += 1;
 	}
 }
