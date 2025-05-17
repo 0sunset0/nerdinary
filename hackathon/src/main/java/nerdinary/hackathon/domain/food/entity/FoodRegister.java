@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import nerdinary.hackathon.domain.login.entity.User;
+import nerdinary.hackathon.domain.user.User;
 
 import java.time.LocalDate;
 

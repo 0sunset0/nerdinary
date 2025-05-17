@@ -8,8 +8,9 @@ import nerdinary.hackathon.domain.food.entity.Food;
 import nerdinary.hackathon.domain.food.entity.FoodRegister;
 import nerdinary.hackathon.domain.food.repository.FoodRegisterRepository;
 import nerdinary.hackathon.domain.food.repository.FoodRepository;
-import nerdinary.hackathon.domain.login.entity.User;
-import nerdinary.hackathon.domain.login.repository.UserRepository;
+
+import nerdinary.hackathon.domain.user.User;
+import nerdinary.hackathon.domain.user.UserRepository;
 import nerdinary.hackathon.global.exception.CustomException;
 import nerdinary.hackathon.global.exception.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class FoodServiceImpl implements FoodService {
     private LocalDate getLocalDate(FoodRegisterRequest request, LocalDate purchaseDate) {
         LocalDate expirationDate = Optional.ofNullable(request.getExpirationDate())
                 .orElseGet(() -> expirationDateService.calculateExpiration(
-                        request.getFoodName(), request.getStorageMethod(), purchaseDate
+                        request.getFoodCategory(), request.getStorageMethod(), purchaseDate
                 ));
         return expirationDate;
     }

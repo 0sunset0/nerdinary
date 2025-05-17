@@ -14,7 +14,7 @@ import java.util.Map;
 public class ExpirationDateService {
     private final Map<String, Map<String, Integer>> expirationMap = new HashMap<>();
 
-    public LocalDate calculateExpiration(String foodName, String storageMethod, LocalDate purchaseDate) {
+    public LocalDate calculateExpiration(String foodCategory, String storageMethod, LocalDate purchaseDate) {
         try {
             // 상대 경로로 JSON 파일 로딩 (예: 프로젝트 루트 기준)
             File file = new File("./expireJson/expiration-data.json");
@@ -28,7 +28,7 @@ public class ExpirationDateService {
         }
 
         //foodName과 storageMethod를 기준으로 값찾기
-        Map<String, Integer> storageMap = expirationMap.getOrDefault(foodName, new HashMap<>());
+        Map<String, Integer> storageMap = expirationMap.getOrDefault(foodCategory, new HashMap<>());
         int days = storageMap.getOrDefault(storageMethod, 0);
 
         return purchaseDate.plusDays(days); // 예시
