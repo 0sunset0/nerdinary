@@ -8,4 +8,6 @@ public interface FoodService {
 
     FoodRegisterResponse registerFood(FoodRegisterRequest request, Long userId);
     FoodSearchResponse searchFood(Long userId, String query);
+
+    void consumeFood(Long foodRegisterId);
 }

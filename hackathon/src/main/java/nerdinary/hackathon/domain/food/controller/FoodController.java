@@ -69,4 +69,13 @@ public class FoodController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "음식 소비(사용)")
+    @PutMapping("/consume")
+    public ResponseEntity<Void> consumeFood(
+        @Parameter(hidden = true) @RequestParam Long foodRegisterId
+    ) {
+        foodService.consumeFood(foodRegisterId);
+        return ResponseEntity.ok().build();
+    }
+
 }
