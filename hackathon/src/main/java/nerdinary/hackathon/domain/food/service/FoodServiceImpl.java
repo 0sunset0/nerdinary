@@ -108,8 +108,6 @@ public class FoodServiceImpl implements FoodService {
 
         User user = foodRegister.getUser();
         user.plusUsedCount();
-        // 삭제
-        foodRegisterRepository.delete(foodRegister);
     }
 
 
