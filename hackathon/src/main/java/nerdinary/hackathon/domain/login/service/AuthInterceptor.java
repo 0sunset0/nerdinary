@@ -5,6 +5,7 @@ import static nerdinary.hackathon.global.exception.ErrorCode.*;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,11 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String path = request.getRequestURI();
+
+		if (CorsUtils.isPreFlightRequest(request)) {
+			// CORS Preflight 요청은 인증을 건너뜀
+			return true;
+		}
 
 		// 인증 제외 경로는 그냥 통과
 		if (EXCLUDE_PATHS.contains(path)) {
