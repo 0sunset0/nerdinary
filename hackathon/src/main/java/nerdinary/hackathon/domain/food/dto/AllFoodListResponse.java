@@ -13,4 +13,5 @@ public class AllFoodListResponse {
     private String foodCategory;
     private LocalDate expirationDate;
     private long daysLeft;
+    private String storageMethod;
 }
