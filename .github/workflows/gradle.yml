@@ -54,7 +54,7 @@ jobs:
           docker build -t app .
           docker tag app ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
-        working-directory: hackathon
+        working-directory: .
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
