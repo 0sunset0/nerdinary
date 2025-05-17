@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import nerdinary.hackathon.domain.login.entity.User;
+import nerdinary.hackathon.domain.user.User;
 
 import java.time.LocalDate;
 
@@ -28,6 +28,7 @@ public class FoodRegister {
 
     private String storageMethod; // "냉장", "냉동", "실온"
 
+    @Builder.Default
     private Boolean foodStatus = true; // true = 보관 중, false = 폐기됨
 
     @ManyToOne(fetch = FetchType.LAZY)

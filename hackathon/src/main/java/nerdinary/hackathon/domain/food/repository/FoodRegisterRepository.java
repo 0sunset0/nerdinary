@@ -2,7 +2,7 @@ package nerdinary.hackathon.domain.food.repository;
 
 
 import nerdinary.hackathon.domain.food.entity.FoodRegister;
-import nerdinary.hackathon.domain.login.entity.User;
+import nerdinary.hackathon.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
