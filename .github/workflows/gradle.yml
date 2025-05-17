@@ -36,14 +36,17 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo "$APPLICATION" > src/main/resources/application.properties
+        working-directory: hackathon
         env:
           APPLICATION: ${{ secrets.APPLICATION }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        working-directory: hackathon
 
       - name: Build with Gradle
         run: ./gradlew build -x test
+        working-directory: hackathon
 
       - name: Docker build
         run: |
@@ -51,6 +54,7 @@ jobs:
           docker build -t app .
           docker tag app ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
+        working-directory: hackathon
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
