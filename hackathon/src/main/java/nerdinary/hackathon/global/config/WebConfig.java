@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
 				"http://localhost:8081",
 				"http://localhost:8080",
 				"https://goodluckynews.store",
-				"https://goodluckynews.store"
+				"http://goodluckynews.store"
 			)
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.allowedHeaders("*")
