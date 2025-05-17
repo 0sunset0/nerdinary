@@ -2,6 +2,7 @@ package nerdinary.hackathon.domain.food.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,12 +12,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterRequest;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterResponse;
+import nerdinary.hackathon.domain.food.dto.FoodSearchResponse;
 import nerdinary.hackathon.domain.food.service.FoodService;
+import nerdinary.hackathon.domain.login.jwt.JwtValidation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +29,9 @@ public class FoodController {
     @Operation(
             summary = "음식 등록",
             description = "사용자가 음식을 등록합니다.",
+            parameters = {
+                    @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true)
+            },
             responses = {
                     @ApiResponse(responseCode = "200", description = "등록 성공",
                             content = @Content(schema = @Schema(implementation = FoodRegisterResponse.class))),
@@ -37,12 +40,33 @@ public class FoodController {
     )
     @PostMapping("/register")
     public ResponseEntity<FoodRegisterResponse> registerFood(
-            HttpServletRequest request,
+            @Parameter(hidden = true) @JwtValidation Long userId,
             @Parameter(description = "음식 등록 정보", required = true, schema = @Schema(implementation = FoodRegisterRequest.class))
             @RequestBody @Valid FoodRegisterRequest dto
     ) {
-        Long userId = (Long) request.getAttribute("userId");
         FoodRegisterResponse response = foodService.registerFood(dto, userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "음식 검색",
+            description = "음식이름을 검색하면 자신이 등록한 음식들을 반환합니다.",
+            parameters = {
+                    @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true),
+                    @Parameter(name = "name", description = "검색어", required = true)
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "검색 성공",
+                            content = @Content(schema = @Schema(implementation = FoodSearchResponse.class))),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청")
+            }
+    )
+    @GetMapping("/search")
+    public ResponseEntity<FoodSearchResponse> searchFood(
+            @Parameter(hidden = true) @JwtValidation Long userId,
+            @RequestParam String query
+    ) {
+        FoodSearchResponse response = foodService.searchFood(userId, query);
         return ResponseEntity.ok(response);
     }
 }
