@@ -27,7 +27,8 @@ public class FoodRegister {
     private String storageMethod; // "냉장", "냉동", "실온"
 
     @Builder.Default
-    private String foodStatus = "보관"; // "보관", "소비"
+
+    private String foodStatus = "보관"; // "보관", "사용"
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -36,4 +37,9 @@ public class FoodRegister {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id")
     private Food food;
+
+    public void consume() {
+        this.foodStatus = "사용";
+    }
+
 }

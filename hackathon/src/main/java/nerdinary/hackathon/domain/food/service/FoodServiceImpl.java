@@ -2,6 +2,7 @@ package nerdinary.hackathon.domain.food.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import nerdinary.hackathon.domain.food.dto.AllFoodListResponse;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterRequest;
 import nerdinary.hackathon.domain.food.dto.FoodRegisterResponse;
 import nerdinary.hackathon.domain.food.dto.FoodSearchResponse;
@@ -18,6 +19,7 @@ import nerdinary.hackathon.global.exception.ErrorCode;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +67,7 @@ public class FoodServiceImpl implements FoodService {
 
         foodRegisterRepository.save(register);
 
+        register.getUser().plusTotalFoodCount();
         return new FoodRegisterResponse(register.getFoodRegisterId(), food.getFoodName(), expirationDate);
     }
 
@@ -90,4 +93,72 @@ public class FoodServiceImpl implements FoodService {
 
         return new FoodSearchResponse(results);
     }
+
+    @Transactional
+    @Override
+    public void consumeFood(Long foodRegisterId) {
+        FoodRegister foodRegister = foodRegisterRepository.findById(foodRegisterId)
+                .orElseThrow(() -> new CustomException(ErrorCode.FOOD_REGISTER_NOT_FOUND));
+
+        foodRegister.consume(); //상태 변경
+        //유저 사용 개수 증가
+        User user = foodRegister.getUser();
+        user.plusUsedCount();
+    }
+
+    @Transactional
+    public List<AllFoodListResponse> getAllFoodsWithDday(Long userId) {
+        // User 객체 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        // 사용자 기반 음식 등록 정보 조회
+        List<FoodRegister> foodList = foodRegisterRepository.findByUser(user);
+
+        // 응답 DTO 변환
+        return foodList.stream()
+                .map(foodRegister -> {
+                    String name = foodRegister.getFood().getFoodName();
+                    LocalDate expiration = foodRegister.getExpirationDate();
+                    long daysLeft = expiration != null
+                            ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
+                            : -1;
+                    return new AllFoodListResponse(name, expiration, daysLeft);
+                })
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public List<AllFoodListResponse> getFilteredFoods(Long userId, String storageMethod, boolean isExpiringSoon) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        List<FoodRegister> foodList = foodRegisterRepository.findByUser(user);
+
+        return foodList.stream()
+                // 보관 방식 필터링
+                .filter(fr -> storageMethod == null || fr.getStorageMethod().equalsIgnoreCase(storageMethod))
+
+                // D-7 이하 필터링
+                .filter(fr -> {
+                    if (!isExpiringSoon) return true;
+                    if (fr.getExpirationDate() == null) return false;
+                    long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), fr.getExpirationDate());
+                    return daysLeft <= 7;
+                })
+
+                // 응답 변환
+                .map(fr -> {
+                    String name = fr.getFood().getFoodName();
+                    LocalDate expiration = fr.getExpirationDate();
+                    long daysLeft = expiration != null
+                            ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
+                            : -1;
+                    return new AllFoodListResponse(name, expiration, daysLeft);
+                })
+                .toList();
+    }
+
+
 }
