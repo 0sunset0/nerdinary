@@ -104,6 +104,8 @@ public class FoodServiceImpl implements FoodService {
         //유저 사용 개수 증가
         User user = foodRegister.getUser();
         user.plusUsedCount();
+        // 삭제
+        foodRegisterRepository.delete(foodRegister);
     }
 
     @Transactional
