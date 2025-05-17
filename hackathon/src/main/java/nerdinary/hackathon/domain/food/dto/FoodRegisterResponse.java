@@ -6,8 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Data
-@Builder
+@Getter
 public class FoodRegisterResponse {
     private Long foodRegisterId;
     private String foodName;
