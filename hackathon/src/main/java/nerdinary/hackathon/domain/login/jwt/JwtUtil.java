@@ -19,17 +19,17 @@ public class JwtUtil {
 	private final long accessTokenValid = 1000 * 60 * 30;
 	private final long refreshTokenValid = 1000 * 60 * 60 * 24 * 14;
 
-	public String createAccessToken(String email) {
-		return createToken(email, accessTokenValid);
+	public String createAccessToken(Long userId) {
+		return createToken(userId, accessTokenValid);
 	}
 
-	public String createRefreshToken(String email) {
-		return createToken(email, refreshTokenValid);
+	public String createRefreshToken(Long userId) {
+		return createToken(userId, refreshTokenValid);
 	}
 
-	private String createToken(String email, long validity) {
+	private String createToken(Long userId, long validity) {
 		return Jwts.builder()
-			.setSubject(email)
+			.setSubject(String.valueOf(userId))
 			.setIssuedAt(new Date())
 			.setExpiration(new Date(System.currentTimeMillis() + validity))
 			.signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
@@ -46,10 +46,10 @@ public class JwtUtil {
 		}
 	}
 
-	public String getPasswordFromToken(String token) {
-		return Jwts.parserBuilder().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).build()
+	public Long getUserIdFromToken(String token) {
+		return Long.valueOf(Jwts.parserBuilder().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).build()
 			.parseClaimsJws(token)
 			.getBody()
-			.getSubject();
+			.getSubject());
 	}
 }
