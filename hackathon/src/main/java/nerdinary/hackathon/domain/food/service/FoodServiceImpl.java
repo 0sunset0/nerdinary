@@ -45,14 +45,17 @@ public class FoodServiceImpl implements FoodService {
                 .orElse(LocalDate.now());
 
         // 4. 소비기한 설정
-        LocalDate expirationDate = getLocalDate(request, request.getExpirationDate());
+        LocalDate expirationDate = Optional.ofNullable(request.getExpirationDate())
+                .orElseGet(() -> expirationDateService.calculateExpiration(
+                        request.getFoodName(), request.getStorageMethod(), purchaseDate
+                ));
 
         // 5. 음식 등록 저장
         FoodRegister register = FoodRegister.builder()
                 .purchaseDate(purchaseDate)
                 .expirationDate(expirationDate)
                 .storageMethod(request.getStorageMethod())
-                .foodStatus(true)
+                .foodStatus("보관")
                 .user(user)
                 .food(food)
                 .build();
@@ -60,13 +63,5 @@ public class FoodServiceImpl implements FoodService {
         foodRegisterRepository.save(register);
 
         return new FoodRegisterResponse(register.getFoodRegisterId(), food.getFoodName(), expirationDate);
-    }
-
-    private LocalDate getLocalDate(FoodRegisterRequest request, LocalDate purchaseDate) {
-        LocalDate expirationDate = Optional.ofNullable(request.getExpirationDate())
-                .orElseGet(() -> expirationDateService.calculateExpiration(
-                        request.getFoodCategory(), request.getStorageMethod(), purchaseDate
-                ));
-        return expirationDate;
     }
 }
