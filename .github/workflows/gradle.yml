@@ -36,21 +36,25 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo "$APPLICATION" > src/main/resources/application.properties
+        working-directory: hackathon
         env:
           APPLICATION: ${{ secrets.APPLICATION }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        working-directory: hackathon
 
       - name: Build with Gradle
         run: ./gradlew build -x test
+        working-directory: hackathon
 
       - name: Docker build
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t app .
-          docker tag app ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMGNAME }}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMGNAME }}:latest
+          docker tag app ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
+        working-directory: .
 
       - name: Deploy to dev
         uses: appleboy/ssh-action@master
@@ -60,9 +64,9 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/`docker_username`:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d --log-driver=syslog -p 8080:8080 -e TZ=Asia/Seoul -e SPRING_PROFILES_ACTIVE= ${{ secrets.DOCKER_USERNAME }}/`docker_username`:latest
+            sudo docker run -d --log-driver=syslog -p 8080:8080 -e TZ=Asia/Seoul -e SPRING_PROFILES_ACTIVE= ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker image prune -a -f
 

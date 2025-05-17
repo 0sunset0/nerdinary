@@ -39,6 +39,10 @@ dependencies {
 	// H2 (for dev)
 	implementation 'com.h2database:h2'
 
+	//mysql
+
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
 	// QueryDSL (Jakarta 버전)
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
