@@ -96,17 +96,22 @@ public class FoodServiceImpl implements FoodService {
 
     @Transactional
     @Override
-    public void consumeFood(Long foodRegisterId) {
+    public void consumeFood(Long userId, Long foodRegisterId) {
         FoodRegister foodRegister = foodRegisterRepository.findById(foodRegisterId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FOOD_REGISTER_NOT_FOUND));
 
-        foodRegister.consume(); //상태 변경
-        //유저 사용 개수 증가
+        if (!foodRegister.getUser().getId().equals(userId)) {
+            throw new CustomException(ErrorCode.FORBIDDEN); // 403 권한 없음
+        }
+
+        foodRegister.consume();
+
         User user = foodRegister.getUser();
         user.plusUsedCount();
         // 삭제
         foodRegisterRepository.delete(foodRegister);
     }
+
 
     @Transactional
     public List<AllFoodListResponse> getAllFoodsWithDday(Long userId) {
@@ -120,13 +125,14 @@ public class FoodServiceImpl implements FoodService {
         // 응답 DTO 변환
         return foodList.stream()
                 .map(foodRegister -> {
+                    long id = foodRegister.getFoodRegisterId();
                     String name = foodRegister.getFood().getFoodName();
                     String category = foodRegister.getFood().getFoodCategory();
                     LocalDate expiration = foodRegister.getExpirationDate();
                     long daysLeft = expiration != null
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
-                    return new AllFoodListResponse(name, category, expiration, daysLeft);
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft);
                 })
                 .toList();
     }
@@ -153,13 +159,14 @@ public class FoodServiceImpl implements FoodService {
 
                 // 응답 변환
                 .map(fr -> {
+                    long id = fr.getFoodRegisterId();
                     String name = fr.getFood().getFoodName();
                     String category = fr.getFood().getFoodCategory();
                     LocalDate expiration = fr.getExpirationDate();
                     long daysLeft = expiration != null
                             ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
                             : -1;
-                    return new AllFoodListResponse(name, category, expiration, daysLeft);
+                    return new AllFoodListResponse(id, name, category, expiration, daysLeft);
                 })
                 .toList();
     }
