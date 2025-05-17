@@ -129,4 +129,37 @@ public class FoodServiceImpl implements FoodService {
                 .toList();
     }
 
+    @Override
+    @Transactional
+    public List<AllFoodListResponse> getFilteredFoods(Long userId, String storageMethod, boolean isExpiringSoon) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        List<FoodRegister> foodList = foodRegisterRepository.findByUser(user);
+
+        return foodList.stream()
+                // 보관 방식 필터링
+                .filter(fr -> storageMethod == null || fr.getStorageMethod().equalsIgnoreCase(storageMethod))
+
+                // D-7 이하 필터링
+                .filter(fr -> {
+                    if (!isExpiringSoon) return true;
+                    if (fr.getExpirationDate() == null) return false;
+                    long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), fr.getExpirationDate());
+                    return daysLeft <= 7;
+                })
+
+                // 응답 변환
+                .map(fr -> {
+                    String name = fr.getFood().getFoodName();
+                    LocalDate expiration = fr.getExpirationDate();
+                    long daysLeft = expiration != null
+                            ? ChronoUnit.DAYS.between(LocalDate.now(), expiration)
+                            : -1;
+                    return new AllFoodListResponse(name, expiration, daysLeft);
+                })
+                .toList();
+    }
+
+
 }
