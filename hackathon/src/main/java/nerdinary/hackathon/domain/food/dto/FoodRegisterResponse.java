@@ -1,13 +1,11 @@
 package nerdinary.hackathon.domain.food.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class FoodRegisterResponse {
     private Long foodRegisterId;

@@ -1,0 +1,102 @@
+[
+  {
+    "foodBTI": "EFFS",
+    "typeName": "냉장고 마스터형",
+    "foodBTIDetail": "Eco-Friendly Fridge Saver",
+    "description": "거의 모든 재료를 적시에 깔끔하게 소비해요.\n버림 없이 실천하는 냉장고 모범생!",
+    "conditions": {
+      "consumptionRateMin": 90,
+      "dDayMin": 1
+    },
+    "level": 8,
+    "fridgeComment": "냉꼼이 뿌듯! 완벽한 냉장고 관리에요! 🌱"
+  },
+  {
+    "foodBTI": "ECST",
+    "typeName": "순삭 소비형",
+    "foodBTIDetail": "Eco-Conscious Speedy Taster",
+    "description": "식재료를 빠르게 소비하는 부지런한 타입!\n상하기 전에 깔끔하게 해결해요.",
+    "conditions": {
+      "consumptionRateMin": 80,
+      "dDayMin": 2
+    },
+    "level": 7,
+    "fridgeComment": "이 속도면 탄소가 따라잡을 틈이 없어요! 🏃‍♂️💨"
+  },
+  {
+    "foodBTI": "ECTT",
+    "typeName": "타이밍 만렙형",
+    "foodBTIDetail": "Eco-Conscious Timely Taster",
+    "description": "유통기한 맞춰서 똑똑하게 소비해요.\n계획은 없지만 자연스럽게 실천하는 똑순이!",
+    "conditions": {
+      "consumptionRateMin": 80,
+      "dDayMin": 0,
+      "dDayMax": 2
+    },
+    "level": 6,
+    "fridgeComment": "정확한 타이밍! 냉꼼이 감탄했어요! ⏰"
+  },
+  {
+    "foodBTI": "CMST",
+    "typeName": "균형 소비형",
+    "foodBTIDetail": "Careful Moderate Saver Taster",
+    "description": "조금 늦게 먹기도 하지만 평균적으로 잘 소비해요.\n기본은 챙기는 밸런스 소비자!",
+    "conditions": {
+      "consumptionRateMin": 60,
+      "consumptionRateMax": 79,
+      "dDayMin": 1,
+      "dDayMax": 2
+    },
+    "level": 5,
+    "fridgeComment": "살~짝 아슬했지만 탄소 낭비 없이 잘 해냈어요! 👍"
+  },
+  {
+    "foodBTI": "LCTS",
+    "typeName": "느긋한 구조대형",
+    "foodBTIDetail": "Late Conscious Thoughtful Saver",
+    "description": "유통기한 지나도 괜찮다면 먹는 타입!\n살릴 수 있는 건 살려내는 구세주!",
+    "conditions": {
+      "consumptionRateMin": 70,
+      "dDayMax": -1
+    },
+    "level": 4,
+    "fridgeComment": "조금은 아슬아슬하지만, 마음은 착해요! 🥲"
+  },
+  {
+    "foodBTI": "FRGV",
+    "typeName": "식재료 부활술사형",
+    "foodBTIDetail": "Food Reviver Green Virtuoso",
+    "description": "재료를 오래 묵혀도 끝내 소비하는 타입!\n유통기한? 마음으로 판단해요.",
+    "conditions": {
+      "consumptionRateMax": 69,
+      "dDayMin": 3
+    },
+    "level": 3,
+    "fridgeComment": "묵혀도 살리는 그대! 냉장고 마법사! 🧙‍♂️"
+  },
+  {
+    "foodBTI": "CWDW",
+    "typeName": "냉장고 혼돈형",
+    "foodBTIDetail": "Casual Wasteful Disorganized Watcher",
+    "description": "뭘 넣었는지도, 뭘 먹었는지도 몰라요.\n냉장고 안에서 시간이 멈춘 듯!",
+    "conditions": {
+      "consumptionRateMin": 50,
+      "consumptionRateMax": 69,
+      "dDayMax": 1
+    },
+    "level": 2,
+    "fridgeComment": "흠… 냉장고가 너무 조용하면 탄소가 운다구요… 🫣"
+  },
+  {
+    "foodBTI": "WASF",
+    "typeName": "방치 마스터형",
+    "foodBTIDetail": "Wasteful Abandonment Slow Finisher",
+    "description": "거의 다 버리거나 유통기한 지나도 못 먹어요.\n냉장고와 대화를 나눠야 할 때!",
+    "conditions": {
+      "consumptionRateMax": 49,
+      "dDayMax": 0
+    },
+    "level": 1,
+    "fridgeComment": "냉꼼이 충격! 냉장고와 대화를 좀… 😢"
+  }
+]
