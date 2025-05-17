@@ -32,12 +32,15 @@ public class RateService {
 	public void init() {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			File file = new File("./rateJson/rate-date.json");  // 파일 경로 맞게 조정 필요
-			rateDataList = mapper.readValue(file, new TypeReference<List<Map<String, Object>>>() {});
+			File file = new File("./rateJson/rate-date.json"); // 현재 작업 디렉토리 기준
+
+			rateDataList = mapper.readValue(file, new TypeReference<>() {});
+			System.out.println("rate-data.json 로드 완료!");
 		} catch (Exception e) {
 			throw new RuntimeException("rate-data.json 파일 로드 실패", e);
 		}
 	}
+
 
 	public RateResponse calculateUserRate(Long userId) {
 		User user = userRepository.findById(userId)
