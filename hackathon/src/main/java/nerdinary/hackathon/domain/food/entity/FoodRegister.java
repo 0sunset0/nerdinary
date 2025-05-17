@@ -36,4 +36,9 @@ public class FoodRegister {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_id")
     private Food food;
+
+    public void consume() {
+        this.foodStatus = "사용";
+    }
+
 }

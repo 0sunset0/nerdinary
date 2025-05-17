@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/foods")
-@Tag(name = "Food", description = "음식 등록 API")
+@Tag(name = "Food", description = "음식 API")
 public class FoodController {
 
     private final FoodService foodService;
@@ -99,6 +99,15 @@ public class FoodController {
     ) {
         FoodSearchResponse response = foodService.searchFood(userId, query);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "음식 소비(사용)")
+    @PutMapping("/consume")
+    public ResponseEntity<Void> consumeFood(
+        @Parameter(hidden = true) @RequestParam Long foodRegisterId
+    ) {
+        foodService.consumeFood(foodRegisterId);
+        return ResponseEntity.ok().build();
     }
 
 }

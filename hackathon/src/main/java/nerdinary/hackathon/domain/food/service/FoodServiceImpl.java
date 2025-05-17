@@ -67,6 +67,7 @@ public class FoodServiceImpl implements FoodService {
 
         foodRegisterRepository.save(register);
 
+        register.getUser().plusTotalFoodCount();
         return new FoodRegisterResponse(register.getFoodRegisterId(), food.getFoodName(), expirationDate);
     }
 
@@ -91,6 +92,18 @@ public class FoodServiceImpl implements FoodService {
                 .toList();
 
         return new FoodSearchResponse(results);
+    }
+
+    @Transactional
+    @Override
+    public void consumeFood(Long foodRegisterId) {
+        FoodRegister foodRegister = foodRegisterRepository.findById(foodRegisterId)
+                .orElseThrow(() -> new CustomException(ErrorCode.FOOD_REGISTER_NOT_FOUND));
+
+        foodRegister.consume(); //상태 변경
+        //유저 사용 개수 증가
+        User user = foodRegister.getUser();
+        user.plusUsedCount();
     }
 
     @Override
