@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AllFoodListResponse {
     private String foodName;
+    private String foodCategory;
     private LocalDate expirationDate;
     private long daysLeft;
 }

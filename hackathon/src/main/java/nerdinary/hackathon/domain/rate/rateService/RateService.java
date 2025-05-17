@@ -11,11 +11,14 @@ import nerdinary.hackathon.domain.rate.dto.RateResponse;
 import nerdinary.hackathon.domain.login.service.UserException;
 import nerdinary.hackathon.domain.user.User;
 import nerdinary.hackathon.domain.user.UserRepository;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import java.io.File;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import org.springframework.core.io.Resource;
 
 @Component
 @RequiredArgsConstructor
@@ -32,8 +35,13 @@ public class RateService {
 	public void init() {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			File file = new File("./rate-data.json");  // 파일 경로 맞게 조정 필요
-			rateDataList = mapper.readValue(file, new TypeReference<List<Map<String, Object>>>() {});
+
+			// ClassPathResource를 사용해서 resources 폴더 내부 파일 읽기
+			Resource resource = new ClassPathResource("rateJson/rate-date.json");
+			InputStream inputStream = resource.getInputStream();
+
+			rateDataList = mapper.readValue(inputStream, new TypeReference<>() {});
+			System.out.println("rate-data.json 로드 완료!");
 		} catch (Exception e) {
 			throw new RuntimeException("rate-data.json 파일 로드 실패", e);
 		}

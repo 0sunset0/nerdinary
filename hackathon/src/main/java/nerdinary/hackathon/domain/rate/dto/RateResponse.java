@@ -1,5 +1,6 @@
 package nerdinary.hackathon.domain.rate.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -7,12 +8,28 @@ import lombok.Getter;
 @Getter
 @Builder
 public class RateResponse {
-    private String consumptionRate;           // 예: "90%"
-    private String fridgeComment;             // 예: "냉꼼이 뿌듯! 완벽한 냉장고 관리에요!"
-    private long nearExpiredCount;             // 예: 3
-    private int level;                        // 예: 5
-    private String typeName;                  // 예: "냉장고 천재형"
-    private String foodBTI;                   // 예: "EFFS"
-    private String foodBTIDetail;             // 예: "Eco-Friendly Fridge Saver"
-    private String description;               // 예: 상세설명
+
+    @Schema(description = "소비율 (예: 90%)")
+    private String consumptionRate;
+
+    @Schema(description = "냉장고 코멘트")
+    private String fridgeComment;
+
+    @Schema(description = "유통기한 임박 식품 개수")
+    private long nearExpiredCount;
+
+    @Schema(description = "사용자 레벨")
+    private int level;
+
+    @Schema(description = "냉장고 유형 이름")
+    private String typeName;
+
+    @Schema(description = "냉장고 BTI (예: EFFS)")
+    private String foodBTI;
+
+    @Schema(description = "냉장고 BTI 상세 명칭")
+    private String foodBTIDetail;
+
+    @Schema(description = "BTI 설명")
+    private String description;
 }
