@@ -1,6 +1,7 @@
 package nerdinary.hackathon.domain.rate.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +23,7 @@ public class RateController {
     private final RateService rateService;
 
     @Operation(
-            summary = "냉장고 소비율 및 BTI 분석 결과 조회",
+            summary = "MBTI 분석 결과 조회",
             description = "사용자의 냉장고 소비율, 유통기한 임박 식품 개수, 레벨, BTI 정보 등을 조회합니다."
     )
     @ApiResponses(value = {
@@ -31,7 +32,9 @@ public class RateController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/rate")
-    public ResponseEntity<RateResponse> getRate(@JwtValidation Long userId) {
+    public ResponseEntity<RateResponse> getRate(
+            @Parameter(hidden = true)
+            @JwtValidation Long userId) {
         RateResponse response = rateService.calculateUserRate(userId);
         return ResponseEntity.ok(response);
     }
