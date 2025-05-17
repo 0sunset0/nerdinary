@@ -96,20 +96,15 @@ public class FoodServiceImpl implements FoodService {
 
     @Transactional
     @Override
-    public void consumeFood(Long userId, Long foodRegisterId) {
+    public void consumeFood(Long foodRegisterId) {
         FoodRegister foodRegister = foodRegisterRepository.findById(foodRegisterId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FOOD_REGISTER_NOT_FOUND));
 
-        if (!foodRegister.getUser().getId().equals(userId)) {
-            throw new CustomException(ErrorCode.FORBIDDEN); // 403 권한 없음
-        }
-
-        foodRegister.consume();
-
+        foodRegister.consume(); //상태 변경
+        //유저 사용 개수 증가
         User user = foodRegister.getUser();
         user.plusUsedCount();
     }
-
 
     @Transactional
     public List<AllFoodListResponse> getAllFoodsWithDday(Long userId) {
