@@ -104,7 +104,8 @@ public class FoodController {
     @Operation(summary = "음식 소비(사용)")
     @PutMapping("/consume")
     public ResponseEntity<Void> consumeFood(
-        @Parameter(hidden = true) @RequestParam Long foodRegisterId
+        @Parameter(name = "foodRegisterId", required = true, in = ParameterIn.QUERY)
+        @RequestParam Long foodRegisterId
     ) {
         foodService.consumeFood(foodRegisterId);
         return ResponseEntity.ok().build();
