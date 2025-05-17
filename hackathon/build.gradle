@@ -2,7 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'nerdinary'
@@ -40,7 +39,7 @@ dependencies {
 	// H2 (for dev)
 	implementation 'com.h2database:h2'
 
-	// QueryDSL (jakarta 버전)
+	// QueryDSL (Jakarta 버전)
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.1.0'
@@ -51,12 +50,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-def querydslDir = 'src/main/generated'
-
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
+// QueryDSL 설정 (수동 방식)
+def querydslDir = "src/main/generated"
 
 sourceSets {
 	main.java.srcDirs += [querydslDir]
