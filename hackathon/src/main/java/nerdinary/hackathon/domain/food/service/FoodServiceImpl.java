@@ -45,7 +45,7 @@ public class FoodServiceImpl implements FoodService {
                 .orElse(LocalDate.now());
 
         // 4. 소비기한 설정
-        LocalDate expirationDate = getLocalDate(request, purchaseDate);
+        LocalDate expirationDate = getLocalDate(request, request.getExpirationDate());
 
         // 5. 음식 등록 저장
         FoodRegister register = FoodRegister.builder()
