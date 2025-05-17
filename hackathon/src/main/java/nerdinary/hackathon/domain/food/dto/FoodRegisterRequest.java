@@ -4,7 +4,6 @@ public class FoodRegisterRequest {
 
     private String foodName;
     private String foodCategory;
-    private Integer quantity;
     private String purchaseDate;
     private String expirationDate;
     private String storageMethod;
