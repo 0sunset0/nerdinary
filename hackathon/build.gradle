@@ -40,7 +40,6 @@ dependencies {
 	implementation 'com.h2database:h2'
 
 	//mysql
-
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// QueryDSL (Jakarta 버전)
@@ -55,6 +54,12 @@ dependencies {
 
 	//s3 설정
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
 }
 
 // QueryDSL 설정 (수동 방식)
