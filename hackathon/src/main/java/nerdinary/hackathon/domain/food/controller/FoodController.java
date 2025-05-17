@@ -105,12 +105,12 @@ public class FoodController {
     @PutMapping("/consume")
     public ResponseEntity<Void> consumeFood(
             @Parameter(hidden = true) @JwtValidation Long userId,
+            @Parameter(name = "foodRegisterId", required = true, in = ParameterIn.QUERY)
             @RequestParam Long foodRegisterId
     ) {
         foodService.consumeFood(userId, foodRegisterId);
         return ResponseEntity.ok().build();
     }
-
 
 
 }
