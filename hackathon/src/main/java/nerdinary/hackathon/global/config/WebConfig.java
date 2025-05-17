@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 				"http://localhost:5173",
 				"http://localhost:8081",
 				"http://localhost:8080",
+				"https://goodluckynews.store",
 				"https://goodluckynews.store"
 			)
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
