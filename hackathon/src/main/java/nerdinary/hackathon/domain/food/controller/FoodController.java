@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import nerdinary.hackathon.domain.food.dto.AllFoodListResponse;
@@ -79,18 +78,19 @@ public class FoodController {
     }
 
 
-
     @Operation(
-            summary = "음식 검색",
-            description = "음식이름을 검색하면 자신이 등록한 음식들을 반환합니다.",
-            parameters = {
-                    @Parameter(name = "query", description = "검색어", required = true, in = ParameterIn.QUERY)
-            },
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "검색 성공",
-                            content = @Content(schema = @Schema(implementation = FoodSearchResponse.class))),
-                    @ApiResponse(responseCode = "400", description = "잘못된 요청")
-            }
+        summary = "음식 검색",
+        description = "음식이름을 검색하면 자신이 등록한 음식들을 반환합니다.",
+        parameters = {
+            @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true,
+                description = "JWT 액세스 토큰"),
+            @Parameter(name = "query", description = "검색어", required = true, in = ParameterIn.QUERY)
+        },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "검색 성공",
+                content = @Content(schema = @Schema(implementation = FoodSearchResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청")
+        }
     )
     @GetMapping("/search")
     public ResponseEntity<FoodSearchResponse> searchFood(
@@ -101,7 +101,20 @@ public class FoodController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "음식 소비(사용)")
+    @Operation(
+        summary = "음식 소비(사용)",
+        description = "등록된 음식을 소비 상태로 변경합니다.",
+        parameters = {
+            @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true,
+                description = "JWT 액세스 토큰"),
+            @Parameter(name = "foodRegisterId", required = true, in = ParameterIn.QUERY,
+                description = "소비할 음식의 등록 ID")
+        },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "소비 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청")
+        }
+    )
     @PutMapping("/consume")
     public ResponseEntity<Void> consumeFood(
             @Parameter(hidden = true) @JwtValidation Long userId,

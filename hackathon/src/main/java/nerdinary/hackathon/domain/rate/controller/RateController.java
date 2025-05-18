@@ -2,6 +2,7 @@ package nerdinary.hackathon.domain.rate.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,13 +24,17 @@ public class RateController {
     private final RateService rateService;
 
     @Operation(
-            summary = "MBTI 분석 결과 조회",
-            description = "사용자의 냉장고 소비율, 유통기한 임박 식품 개수, 레벨, BTI 정보 등을 조회합니다."
+        summary = "MBTI 분석 결과 조회",
+        description = "사용자의 냉장고 소비율, 유통기한 임박 식품 개수, 레벨, BTI 정보 등을 조회합니다.",
+        parameters = {
+            @Parameter(name = "Authorization", in = ParameterIn.HEADER, required = true,
+                description = "JWT 액세스 토큰") // 헤더로 JWT 토큰을 받음
+        }
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상적으로 분석 결과가 반환됨"),
-            @ApiResponse(responseCode = "401", description = "JWT 인증 실패"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")
+        @ApiResponse(responseCode = "200", description = "정상적으로 분석 결과가 반환됨"),
+        @ApiResponse(responseCode = "401", description = "JWT 인증 실패"),
+        @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @GetMapping("/rate")
     public ResponseEntity<RateResponse> getRate(
